@@ -1,71 +1,84 @@
-# java-quick-generate README
+# Java Quick Generate
 
-This is the README for your extension "java-quick-generate". After writing up a brief description, we recommend including the following sections.
+A VS Code extension that automatically generates constructors, getters, and setters for Java classes — eliminating repetitive boilerplate code.
+
+## The Problem
+
+Writing getters, setters, and constructors by hand for every Java class field is repetitive and error-prone. Most IDEs like IntelliJ have this built in, but VS Code (a popular lightweight choice for Java development) doesn't, out of the box. This extension fills that gap.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Scans the active Java file for field declarations (`private`, `public`, or `protected`)
+- Automatically detects the class name
+- Generates a constructor that initializes all fields
+- Generates a getter and setter for each field, with correct capitalization
+- Inserts the generated code directly into the class, right before the closing brace
+- Works with any field type, including generics and arrays
 
-For example if there is an image subfolder under your extension project workspace:
+## How It Works
 
-\!\[feature X\]\(images/feature-x.png\)
+The extension uses the VS Code Extension API to read the currently open document, then applies regex pattern matching to identify the class name and field declarations. It builds the constructor and accessor methods as a string, then uses the editor's edit API to insert the generated code at the correct location in the file.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Installation (from source)
 
-## Requirements
+1. Clone this repository
+2. Run `npm install`
+3. Open the folder in VS Code
+4. Press `F5` to launch an Extension Development Host window
+5. Open any Java file with field declarations
+6. Run the command `Java: Generate Getters, Setters & Constructor` from the Command Palette (`Ctrl+Shift+P`)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Example
 
-## Extension Settings
+**Before:**
+\`\`\`java
+public class Student {
+    private String name;
+    private int age;
+}
+\`\`\`
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+**After running the command:**
+\`\`\`java
+public class Student {
+    private String name;
+    private int age;
 
-For example:
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
 
-This extension contributes the following settings:
+    public String getName() {
+        return name;
+    }
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+    public void setName(String name) {
+        this.name = name;
+    }
 
-## Known Issues
+    public int getAge() {
+        return age;
+    }
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+\`\`\`
 
-## Release Notes
+## Tech Stack
 
-Users appreciate release notes as you update your extension.
+- TypeScript
+- VS Code Extension API
+- Node.js
 
-### 1.0.0
+## Future Improvements
 
-Initial release of ...
+- Generate `toString()`, `equals()`, and `hashCode()` methods
+- Let the user select which fields to include via a quick-pick menu
+- Publish to the VS Code Marketplace
 
-### 1.0.1
+## Author
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Built by [Sunil](https://github.com/sunshiv123) as a learning project while studying Java and full-stack development.
